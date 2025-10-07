@@ -1,25 +1,20 @@
 import { Particles } from "./ui/shadcn-io/particles";
 
-export default function Particles_Comp() {
+export default function Particles_Comp({ children }) {
   return (
-    <div className="relative h-screen bg-black overflow-hidden">
-      {/* Your content */}
-      <div className="relative z-10 flex items-center justify-center h-full">
-        <div className="text-center">
-          
-        
-        </div>
+   <div className="relative min-h-full bg-black overflow-hidden">
+
+    <Particles
+  className="fixed inset-0 z-0 pointer-events-none"
+  quantity={100}
+  ease={20}           // smaller ease = faster movement
+  staticity={20}      // smaller staticity = more movement (less static)
+  color="#ffffff"
+  size={0.8}
+/>
+      <div className="relative z-10 flex flex-col min-h-screen">
+        {children}
       </div>
-      
-      {/* Interactive particles */}
-      <Particles
-        className="absolute inset-0"
-        quantity={100}
-        ease={80}
-        staticity={50}
-        color="#ffffff"
-        size={0.8}
-      />
     </div>
   );
 }
