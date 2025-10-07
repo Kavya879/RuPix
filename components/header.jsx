@@ -104,12 +104,12 @@ import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { UserButton, SignedIn, SignedOut, SignInButton, SignUpButton } from "@clerk/nextjs";
-import { ClerkProvider, useAuth } from "@clerk/clerk-react";
-import { ConvexProviderWithClerk } from "convex/react-clerk";
-import { Authenticated, ConvexReactClient, Unauthenticated } from "convex/react";
+import { UserButton, SignInButton, SignUpButton } from "@clerk/nextjs";
+import { Authenticated,  Unauthenticated } from "convex/react";
 import { useStoreUserEffect } from "@/hooks/useStoreUserEffect";
 import { BarLoader } from "react-spinners";
+import { Button } from "./ui/button";
+import { LayoutDashboard } from "lucide-react";
 const Header = () => {
   const path = usePathname();
   const { isLoading } = useStoreUserEffect();
@@ -179,8 +179,14 @@ const Header = () => {
 
             </SignUpButton>
           </Unauthenticated>
-
+{/* <SignedIn> does NOT wait for Convex backend registration. */}
           <Authenticated>
+          <Link href="/dashboard">
+               <Button variant="glass" className="hidden sm:flex">
+                 <LayoutDashboard className="h-4 w-4" />
+                 <span className="hidden md:flex">Dashboard</span>
+               </Button>
+             </Link>
             <UserButton
               appearance={{
                 elements: {
