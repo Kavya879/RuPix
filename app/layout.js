@@ -83,17 +83,20 @@ export default function RootLayout({ children }) {
             enableSystem
             disableTransitionOnChange
           >
+                <ConvexClientProvider>
+
             <Header />
 
             {/* Use Particles_Comp here and render children inside it */}
             <Particles_Comp>
               <main className="min-h-screen w-full">
-                <ConvexClientProvider>
                   {children}
-                </ConvexClientProvider>
               </main>
             </Particles_Comp>
+                </ConvexClientProvider>
+
           </ThemeProvider>
+          
         </ClerkProvider>
       </body>
     </html>

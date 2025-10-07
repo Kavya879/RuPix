@@ -12,12 +12,7 @@
 // import { Button } from "./ui/button";
 
 // export default function Header() {
-// //   const { isLoading } = useStoreUser();
 //   
-
-//   if (path.includes("/editor")) {
-//     return null; // Hide header on editor page
-//   }
 
 //   return (
 //     <header className="fixed top-6 left-1/2 transform -translate-x-1/2 z-50 text-nowrap">
@@ -110,9 +105,19 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { UserButton, SignedIn, SignedOut, SignInButton, SignUpButton } from "@clerk/nextjs";
-
+import { ClerkProvider, useAuth } from "@clerk/clerk-react";
+import { ConvexProviderWithClerk } from "convex/react-clerk";
+import { Authenticated, ConvexReactClient, Unauthenticated } from "convex/react";
+import { useStoreUserEffect } from "@/hooks/useStoreUserEffect";
+import { BarLoader } from "react-spinners";
 const Header = () => {
   const path = usePathname();
+  const { isLoading } = useStoreUserEffect();
+
+  
+  if (path.includes("/editor")) {
+    return null; // Hide header on editor page
+  }
 
   return (
     <header className="w-full fixed top-0 left-0 z-50 bg-black/60 backdrop-blur-md border-b border-white/10">
@@ -150,7 +155,7 @@ const Header = () => {
 
         {/* Auth Buttons */}
         <div className="flex items-center gap-4">
-          <SignedOut>
+          <Unauthenticated>
             <SignInButton>
               <button className="text-sm font-medium text-white/80 hover:text-white transition-colors">
                 Log in
@@ -173,19 +178,24 @@ const Header = () => {
             </button>
 
             </SignUpButton>
-          </SignedOut>
+          </Unauthenticated>
 
-          <SignedIn>
+          <Authenticated>
             <UserButton
               appearance={{
                 elements: {
                   userButtonAvatarBox: "w-9 h-9",
                 },
               }}
-              afterSignOutUrl="/"
             />
-          </SignedIn>
+          </Authenticated>
         </div>
+        
+         {isLoading && (
+          <div className="fixed bottom-0 left-0 w-full z-40 flex justify-center">
+            <BarLoader width={"95%"} color="#06b6d4" />
+          </div>
+        )}
       </div>
     </header>
   );
