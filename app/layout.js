@@ -1,12 +1,12 @@
+
 import { Inter } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/header";
-// import { ConvexClientProvider } from "@/components/convex-client-provider";
-// import { ClerkProvider } from "@clerk/nextjs";
-// import { shadesOfPurple } from "@clerk/themes";
+import { ClerkProvider } from "@clerk/nextjs";
+import { shadesOfPurple } from "@clerk/themes";
 import { ThemeProvider } from "@/components/theme-provider";
-// import { FloatingShapes } from "@/components/floating-shapes";
-import { Toaster } from "sonner";
+import { ConvexClientProvider } from "@/components/ConvexClientProvider";
+import Particles_Comp from "@/components/particles-basic";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -21,6 +21,7 @@ export default function RootLayout({ children }) {
       <head>
         <link rel="icon" href="/logo-text.png" sizes="any" />
       </head>
+      {/* Fron ShadCn */}
       <body className={`${inter.className}`}>
         <ThemeProvider
           attribute="class"
@@ -28,22 +29,22 @@ export default function RootLayout({ children }) {
           enableSystem
           disableTransitionOnChange
         >
-          {/* <ClerkProvider
+          <ClerkProvider
             publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}
             appearance={{
               baseTheme: shadesOfPurple,
-            }} */}
-          {/* > */}
-            {/* <ConvexClientProvider> */}
+            }}
+          >
+            <ConvexClientProvider>
               <Header />
               <main className="bg-slate-900 min-h-screen text-white overflow-x-hidden">
-                {/* <FloatingShapes /> */}
+                <Particles_Comp/>
                 {/* <Toaster richColors /> */}
 
                 {children}
               </main>
-            {/* </ConvexClientProvider> */}
-          {/* </ClerkProvider> */}
+            </ConvexClientProvider>
+          </ClerkProvider>
         </ThemeProvider>
       </body>
     </html>
