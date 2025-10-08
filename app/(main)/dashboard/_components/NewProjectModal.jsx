@@ -13,6 +13,7 @@ import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
 import { DialogFooter } from '@/components/ui/dialog'
+import { UpgradeModal } from '@/components/ui/upgrade-modal'
 
 // Props (short for properties) are like function parameters for components.
 const NewProjectModal = ({ isOpen, onClose }) => {
@@ -48,9 +49,6 @@ const NewProjectModal = ({ isOpen, onClose }) => {
     setIsUploading(true);
     try {
       // Upload to ImageKit via our API route
-      // first we need to upload image to imagekit
-      // then we need to query the db and save it
-
       const formData = new FormData();
       formData.append("file", selectedFile);
       formData.append("fileName", selectedFile.name);
@@ -77,7 +75,6 @@ const NewProjectModal = ({ isOpen, onClose }) => {
       });
 
       toast.success("Project created successfully!");
-
       router.push(`/editor/${projectId}`);
 
     } catch (error) {
@@ -122,7 +119,11 @@ const NewProjectModal = ({ isOpen, onClose }) => {
   return (
     <>
       <Dialog open={isOpen} onOpenChange={handleClose}>
-        <DialogContent className="max-w-2xl bg-slate-800 border-white/10">
+        <DialogContent
+          className="fixed max-w-2xl w-full bg-slate-900 border border-white/10 rounded-2xl p-6 space-y-6
+                     shadow-2xl flex flex-col justify-center"
+          style={{ top: "50%", left: "50%", transform: "translate(-50%, -50%)" }}
+        >
           <DialogHeader>
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
@@ -160,7 +161,6 @@ const NewProjectModal = ({ isOpen, onClose }) => {
             )}
 
             {/* File Upload Area */}
-            {/* https://react-dropzone.js.org/ */}
             {!selectedFile ? (
               <div
                 {...getRootProps()}
@@ -269,8 +269,14 @@ const NewProjectModal = ({ isOpen, onClose }) => {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
+      <UpgradeModal
+      isOpen={showUpgradeModal}
+      onClose={()=>setShowUpgradeModal(false)}
+      restrictedTool="projects"
+      reason="Free plan limited to 3 projects , upgrade to pro for unlimited projects"
+      />
     </>
   );
-};
-
+}
 export default NewProjectModal;
