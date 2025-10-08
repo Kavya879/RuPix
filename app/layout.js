@@ -60,7 +60,7 @@ import Particles_Comp from "@/components/particles-basic";
 import { ClerkProvider } from "@clerk/nextjs";
 import { dark } from "@clerk/themes";
 import { ConvexClientProvider } from "./ConvexClientProvider";
-
+// Used to wrap common UI, providers, headers, footers, themes, or anything that persists across routes.  
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
