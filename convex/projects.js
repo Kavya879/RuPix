@@ -117,7 +117,7 @@ export const getProject = query({
   },
 });
 
-// Update project canvas state and metadata
+//for AUTOSAVING
 export const updateProject = mutation({
   args: {
     projectId: v.id("projects"),

@@ -1,0 +1,139 @@
+1 - npx create-next-app@latest
+
+2 - page.js is needed for all components of our app
+ layout.js: Defines the shared layout (like navbars, footers, or metadata) that wraps around your pages in a route.
+page.js: Defines the actual content of a specific route (e.g. what shows up at /about, /dashboard, etc.).
+
+3-install shadcn
+install components like button etc , it will automatically create components/ui folder
+we can customise using the files present there
+
+add dark mode shadcn
+
+
+CREATING THE BACKGROUND
+- create floatingshapes.jsx in components/ui
+- rafce , make 4 shapes and add code
+- PARALLAX Scrolling - create a custom hook in hooks/use-parralax.jsx , add relevant code (use client)
+
+
+CREATING HEADER
+- create headerjsx in components/ui 
+- add relevant code
+
+SELECT BACKEND
+- convex - for real time updates and less overhead
+- install convex and configure (refer the docs)
+
+SETUP USER AUTH
+- clerk (god)
+- install , follow the docs
+- add the code to login insdie header as in docs
+- we can customise colours
+- now when login , instead of having a blizzare link , have custom link
+    - setup nextpublicsigninurl etc in env.local
+    - create [auth] folder inside app         [] ensures folder doesnt become a route
+    -create [[...sign-in]] fodler and page.jsx in that
+    - do same for sign up
+    - create layout for auth 
+    
+
+CONNECTING CLERK WITH CONVEX
+- go to convex docs 
+- set issuerurl in env variables
+- do as said in docs
+
+STORING USERS IN CONVEX db 
+- refer convex docs
+- create convex/schema.js
+- define the user schema
+.index helps in fast lookups
+- create users.js
+- copy code from docs
+- in users.js create getCurrentUser
+- create usestoreuser hook as in docs
+
+- add loading bar in header.jsx
+- replace signin and sign up with auth and unauth
+
+
+INSTALL IMAGEKIT
+
+DATABASE DESIGN
+- user , table and folder are entitites
+- in projects table create as stated in convex/schema.js
+
+
+ADD PROTECTED ROUTES
+- like we dont want non sign in to access dashboard or edit
+- inside authenticated tag add the code for element for dashbaord inside header
+- go to middleware.js and add createroutematcher code
+
+LANDING PAGE
+- use good AI prompt to generate
+
+IMPLEMENT CLERK PRICING
+-create pricing.jsx component
+- use clerk billing set up and add features
+- enable billing
+- use pricingtable 
+- implement styling if needed
+-
+
+
+CREATE DASHBOARD PAGE
+(main) contains all the main routes
+-create app/(main)/dashbaord/page.jsx
+-create app/(main)/editor/[projectId]/page.jsx  [] for dynamic url in route
+
+CREATE APIS FOR PROJECT CREATE,FETCH,DELETE
+-. Create convex/projects.js:
+If this file doesn't exist, create it. This is where your project-related backend logic will live.
+
+- convex/projects.js 
+- go there and add mutation functions to read,write and delete data (project) into the db along with handling whether user can acess or not
+
+DASHBOARD ui
+When you have logic that multiple components need (like fetching data, handling scroll, or theme switching),
+you can create your own hook so that code is reusable.
+
+👉 You create a custom hook when you find repeating logic across components.
+- create custom hook convex-quey.js for fetch etc
+-create hooks for query as well as mutation 
+- app/(main)/dashbaord/page.jsx
+use custom hook made above and fetch data useConvexQuery
+-Create new project section
+- create new project modal
+- app/dashboard/_components/new-project-modal
+- create use-plan-access hook (to tell proj count,isfree)
+- add drop image logic
+- create app/api/imagekit/upload/route.js Next.js (app router) server-side API route in Next.js (app router) for handling image uploads via ImageKit.
+- npm i imagekit
+- create upgrademodal component
+        It’s a React component that shows a popup with:
+        A title ("Upgrade to Pro")
+        An alert if a user tried to access a restricted tool
+        A pricing table from Clerk (for billing/subscription)
+        A "Maybe Later" button to close the modal
+        
+-   create dashboard/comp/project-grid.jsx comp to display proj on dashbaord
+- create dashboard/comp/project-card.jsx 
+    Shows project thumbnail + title + size
+    On hover: shows Edit and Delete buttons
+    Deletes project from backend using useConvexMutation
+
+EDITOR PAGE
+- create dashboard/editor/projid/page.jsx
+- there can be multiple states like object ,tool in use etc so create context/context.jsx , add a useContext hook to be shared amongst different canvas parts
+- added the destop only functionality (like screen cant be smaller else wont work)
+- write function to fetch project and autosave inside convex/project.js (get and update project
+)
+-create canvas , topbar , sidebar components in editor/_components
+-in canvas.jsx add auto update,canvas etc
+-create topbar
+-create editorsidebar
+    -create editor/component/tools/crop.jsx
+    -create editor/component/tools/resize.jsx
+    -create editor/component/tools/adjust.jsx and add tools from fabric
+    - work on adjust.js
+    - work on resize.js
