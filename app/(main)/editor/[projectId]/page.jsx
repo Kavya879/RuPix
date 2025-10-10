@@ -7,6 +7,8 @@ import { useParams } from 'next/navigation';
 import React, { useState } from 'react'
 import CanvasEditor from './_components/canvas';
 import { api } from '@/convex/_generated/api';
+import { EditorSidebar } from './_components/editor-sidebar';
+import { EditorTopBar } from './_components/editor-topbar';
 
 const Editor =  () => {
    
@@ -91,12 +93,12 @@ const Editor =  () => {
           )}
 
           {/* Top Bar */}
-          {/* <EditorTopBar project={project} /> */}
+          <EditorTopBar project={project} />
 
           {/* Main Editor Layout */}
           <div className="flex flex-1 overflow-hidden">
             {/* Sidebar */}
-            {/* <EditorSidebar project={project} /> */}
+            <EditorSidebar project={project} />
 
             {/* Canvas Area */}
             <div className="flex-1 bg-slate-800">

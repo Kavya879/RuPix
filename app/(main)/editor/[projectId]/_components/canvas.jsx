@@ -1,6 +1,6 @@
 import { useCanvas } from "@/context/context";
 import { api } from "@/convex/_generated/api";
-import { useConvexMutation } from "@/hooks/use-convex-query";
+import { useConvexMutation } from "@/hooks/useConvexQuery";
 import { Canvas, FabricImage } from "fabric";
 import React, { useEffect, useRef, useState } from "react";
 
