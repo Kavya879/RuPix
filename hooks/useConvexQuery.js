@@ -60,7 +60,7 @@ export const useConvexMutation = (mutation)=>
         } catch (error) {
             setError(error.message);
             toast.error(error.message)
-            throw err; 
+            throw error; 
         }
         finally
         {

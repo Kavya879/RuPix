@@ -12,7 +12,17 @@ const Pricing = () => {
 
         {/* Glassy Pricing Table Container */}
         <div className="bac kdrop-blur-md bg-white/20 rounded-2xl shadow-xl p-10">
-          <PricingTable />
+          <PricingTable
+                    checkoutProps={{
+                      appearance:{
+                          elements:{
+                              drawerRoot:
+                              {
+                                  zIndex:20000
+                              }
+                          }
+                      }
+                    }} />
         </div>
       </div>
     </section>

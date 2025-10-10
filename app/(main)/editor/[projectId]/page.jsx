@@ -9,6 +9,7 @@ import CanvasEditor from './_components/canvas';
 import { api } from '@/convex/_generated/api';
 import { EditorSidebar } from './_components/editor-sidebar';
 import { EditorTopBar } from './_components/editor-topbar';
+import { RingLoader } from 'react-spinners';
 
 const Editor =  () => {
    

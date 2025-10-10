@@ -1,33 +1,33 @@
-import { useAuth } from "@clerk/clerk-react"
+// import { useAuth } from "@clerk/nextjs"
 
 // useAuth() is a React Hook (from a library like Clerk, Convex, or Firebase)
 // that returns an object containing authentication info.
-export const usePlanInfo = ()=>
-{
-    //“Take only the has property from the object returned by useAuth().”
-    const {has} = useAuth();
+export const usePlanInfo = () => {
+  // “Take only the has property from the object returned by useAuth().”
+  const { has } = useAuth();
 
-    //?. means access safely — only if it’s there
-    const isPro = has?.({plan:"Pro"}) || false;
-    const isFree = !isPro;
+  // ?. means access safely — only if it’s there
+  // Plan name is case sensitive, so use "pro" (lowercase) if that is your plan slug
+  const isPro = has?.({ plan: "pro" }) || false;
+  const isFree = !isPro;
 
-    const planAccess = {
+  const planAccess = {
     resize: true,
     crop: true,
     adjust: true,
     text: true,
 
+    // Pro-only features
     background: isPro,
     ai_extender: isPro,
     ai_edit: isPro,
   };
 
-  const hasAccess = (tool)=>
-  {
+  const hasAccess = (tool) => {
     return planAccess[tool] === true;
-  }
+  };
 
-    // Get restricted tools that user doesn't have access to
+  // Get restricted tools that user doesn't have access to
   const getRestrictedTools = () => {
     return Object.entries(planAccess)
       .filter(([_, hasAccess]) => !hasAccess)
@@ -46,7 +46,7 @@ export const usePlanInfo = ()=>
     return currentExportsThisMonth < 20;
   };
 
-   return {
+  return {
     userPlan: isPro ? "pro" : "free_user",
     isPro,
     isFree,
@@ -56,4 +56,4 @@ export const usePlanInfo = ()=>
     canCreateProject,
     canExport,
   };
-}
+};

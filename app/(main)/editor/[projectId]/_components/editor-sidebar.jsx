@@ -14,10 +14,10 @@ import {
 import { useCanvas } from "@/context/context";
 // import { TextControls } from "../tools/text";
 // import { AIExtenderControls } from "./tools/ai-extend";
-// import { ResizeControls } from "../tools/resize";
 // import { AIEdit } from "../tools/ai-edit";
-// import { CropContent } from "../tools/crop";
+import { CropContent } from "../tools/crop";
 import { AdjustControls } from "../tools/adjust";
+import { ResizeControls } from "../tools/resize";
 
 const TOOL_CONFIGS = {
   resize: {
@@ -91,10 +91,10 @@ export function EditorSidebar({ project }) {
 
 function renderToolContent(activeTool, project) {
   switch (activeTool) {
-    // case "crop":
-    //   return <CropContent />;
-    // case "resize":
-    //   return <ResizeControls project={project} />;
+    case "crop":
+      return <CropContent />;
+    case "resize":
+      return <ResizeControls project={project} />;
     case "adjust":
       return <AdjustControls />;
     // case "background":
