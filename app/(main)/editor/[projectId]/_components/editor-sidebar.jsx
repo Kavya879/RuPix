@@ -20,6 +20,7 @@ import { AdjustControls } from "../tools/adjust";
 import { ResizeControls } from "../tools/resize";
 import BackgroundControls from "./ai-background";
 import { TextControls } from "../tools/text";
+import { AIExtenderControls } from "../tools/ai-extend";
 
 const TOOL_CONFIGS = {
   resize: {
@@ -101,8 +102,8 @@ function renderToolContent(activeTool, project) {
       return <AdjustControls />;
     case "background":
       return <BackgroundControls project={project} />
-    // case "ai_extender":
-    //   return <AIExtenderControls project={project} />;
+    case "ai_extender":
+      return <AIExtenderControls project={project} />;
     case "text":
       return <TextControls />;
     // case "ai_edit":
