@@ -1,4 +1,4 @@
-// import { useAuth } from "@clerk/nextjs"
+import { useAuth } from "@clerk/nextjs"
 
 // useAuth() is a React Hook (from a library like Clerk, Convex, or Firebase)
 // that returns an object containing authentication info.
