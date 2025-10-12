@@ -27,10 +27,22 @@ const App = () => {
     const { x, y } = useMousePosition();
     const cardRef = useRef(null);
     const [cardStyle, setCardStyle] = useState({});
+    const [windowSize, setWindowSize] = useState({ width: 1920, height: 1080 });
+
+    // Track window size
+    useEffect(() => {
+        const handleResize = () => {
+            setWindowSize({ width: window.innerWidth, height: window.innerHeight });
+        };
+        
+        handleResize(); // Set initial size
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
 
     // Calculate overall parallax offset based on viewport mouse position
-    const parallaxOffsetX = (x / (window.innerWidth || 1) - 0.5);
-    const parallaxOffsetY = (y / (window.innerHeight || 1) - 0.5);
+    const parallaxOffsetX = (x / (windowSize.width || 1) - 0.5);
+    const parallaxOffsetY = (y / (windowSize.height || 1) - 0.5);
 
     // Handler for the 3D tilt effect on the card itself
     const handleMouseMoveOnCard = (e) => {
