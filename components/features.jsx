@@ -3,7 +3,7 @@ import { Sparkles, Zap, Layers, Wand2, ArrowRight, Check, Cpu, Palette, Image } 
 
 const Features = () => {
   return (
-    <section className="relative py-25 px-6 z-10">
+    <section id="features" className="relative py-25 px-6 z-10">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-20">
             <h2 className="text-5xl md:text-6xl font-black mb-6">
@@ -20,21 +20,21 @@ const Features = () => {
           <div className="grid md:grid-cols-3 gap-8">
             {[
               { 
-                icon: Cpu, 
+                icon:  Zap, 
                 title: 'Background Removal', 
-                desc: 'AI instantly separates subjects with atomic-level precision. One click, perfect results.',
+                desc: 'Remove backgrounds from images with a single click using AI',
                 color: 'from-violet-500 to-purple-500'
               },
               { 
                 icon: Sparkles, 
                 title: 'Image Extender', 
-                desc: 'Scale images up to 8x without any quality loss using advanced neural networks.',
+                desc: 'Scale images up to 8x without any quality loss',
                 color: 'from-fuchsia-500 to-pink-500'
               },
               { 
                 icon: Palette, 
-                title: '------', 
-                desc: 'Intelligent layer blending with context-aware compositing and smart harmonization.',
+                title: 'Upscale , Enhance & Much More', 
+                desc: 'Enhance image quality, adjust colors, and apply artistic filters effortlessly',
                 color: 'from-cyan-500 to-blue-500'
               },
             ].map((feature, i) => (

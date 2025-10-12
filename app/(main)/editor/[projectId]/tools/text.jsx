@@ -28,7 +28,29 @@ const FONT_FAMILIES = [
   "Verdana",
   "Comic Sans MS",
   "Impact",
+  "Trebuchet MS",
+  "Lucida Console",
+  "Lucida Sans Unicode",
+  "Palatino Linotype",
+  "Tahoma",
+  "Segoe UI",
+  "Garamond",
+  "Brush Script MT",
+  "Franklin Gothic Medium",
+  "Gill Sans",
+  "Calibri",
+  "Cambria",
+  "Candara",
+  "Optima",
+  "Rockwell",
+  "Futura",
+  "Didot",
+  "Century Gothic",
+  "Copperplate",
+  "Monaco",
+  "Consolas",
 ];
+
 
 const FONT_SIZES = { min: 8, max: 120, default: 20 };
 

@@ -6,8 +6,8 @@ import { Slider } from "@/components/ui/slider";
 import { ArrowUp, ArrowDown, ArrowLeft, ArrowRight, Wand2 } from "lucide-react";
 import { useCanvas } from "@/context/context";
 import { FabricImage } from "fabric";
-import { useConvexMutation } from "@/hooks/use-convex-query";
 import { api } from "@/convex/_generated/api";
+import { useConvexMutation } from "@/hooks/useConvexQuery";
 
 const DIRECTIONS = [
   { key: "top", label: "Top", icon: ArrowUp },

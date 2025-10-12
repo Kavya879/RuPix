@@ -10,7 +10,7 @@ const Footer = () => {
             </div>
             
             <div className="flex flex-wrap justify-center gap-8 text-sm">
-              {['Features', 'Pricing', 'Gallery', 'Docs', 'Blog', 'Privacy', 'Terms', 'Contact'].map((item) => (
+              {['Features', 'Pricing'].map((item) => (
                 <a key={item} href={`#${item.toLowerCase()}`} className="text-gray-400 hover:text-white transition-colors duration-300">
                   {item}
                 </a>
@@ -19,7 +19,10 @@ const Footer = () => {
           </div>
           
           <div className="text-center text-gray-500 text-sm">
-            © 2025 रूपPix. Transforming reality with AI.
+            © 2025 Kay
+            <p>
+            Inspired from : RoadSideCoder 
+            </p>
           </div>
         </div>
       </footer>

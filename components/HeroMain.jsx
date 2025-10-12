@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { Sparkles, Zap, Layers, Wand2, ArrowRight } from 'lucide-react';
+import { FaGithub } from 'react-icons/fa';
 
 // A custom hook for tracking mouse position to drive parallax effects
 function useMousePosition() {
@@ -56,8 +57,8 @@ const App = () => {
     };
     
     // Individual styles for parallax elements
-    const floatingOrb1Style = { transform: `translateX(${parallaxOffsetX * 60}px) translateY(${parallaxOffsetY * 60}px)` };
-    const floatingOrb2Style = { transform: `translateX(${parallaxOffsetX * -40}px) translateY(${parallaxOffsetY * -40}px)` };
+    const floatingOrb1Style = { transform: `translateX(${parallaxOffsetX * 120}px) translateY(${parallaxOffsetY * 60}px)` };
+    const floatingOrb2Style = { transform: `translateX(${parallaxOffsetX * -80}px) translateY(${parallaxOffsetY * -40}px)` };
     const badge1Style = { transform: `translateX(${parallaxOffsetX * -25}px) translateY(${parallaxOffsetY * -25}px)` };
     const badge2Style = { transform: `translateX(${parallaxOffsetX * 25}px) translateY(${parallaxOffsetY * 25}px)` };
 
@@ -74,7 +75,7 @@ const App = () => {
                     <div className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white/5 backdrop-blur-md border border-white/20 mb-8">
                         <Sparkles className="w-4 h-4 text-violet-400" />
                         <span className="text-sm font-semibold bg-gradient-to-r from-violet-400 to-fuchsia-400 bg-clip-text text-transparent">
-                            Powered by Next-Gen AI
+                            Powered by AI
                         </span>
                     </div>
                     
@@ -91,18 +92,32 @@ const App = () => {
                     </p>
                     
                     <div className="flex flex-col sm:flex-row gap-6 justify-center items-center mb-20">
-                        <button className="group relative px-10 py-5 rounded-full bg-gradient-to-r from-violet-600 to-fuchsia-600 font-bold text-lg transition-all duration-300 hover:scale-110 hover:shadow-2xl hover:shadow-fuchsia-500/50 overflow-hidden">
-                            <span className="relative z-10 flex items-center gap-3">
-                                Start Creating Free
-                                <ArrowRight className="w-5 h-5 group-hover:translate-x-2 transition-transform duration-300" />
-                            </span>
-                            <div className="absolute inset-0 bg-gradient-to-r from-fuchsia-600 to-violet-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                        </button>
-                        
-                        <button className="px-10 py-5 rounded-full border-2 border-white/20 backdrop-blur-md hover:bg-white/10 hover:border-white/40 font-bold text-lg transition-all duration-300">
-                            Watch Demo
-                        </button>
-                    </div>
+                {/* Start Creating Free Button */}
+                <a 
+                    href="/dashboard"
+                    className="group relative px-10 py-5 rounded-full bg-gradient-to-r from-violet-600 to-fuchsia-600 font-bold text-lg transition-all duration-300 hover:scale-110 hover:shadow-2xl hover:shadow-fuchsia-500/50 overflow-hidden"
+                >
+                    <span className="relative z-10 flex items-center gap-3">
+                        Start Creating Free
+                        <ArrowRight className="w-5 h-5 group-hover:translate-x-2 transition-transform duration-300" />
+                    </span>
+                    <div className="absolute inset-0 bg-gradient-to-r from-fuchsia-600 to-violet-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                </a>
+
+                {/* Star on GitHub Button */}
+                <a 
+                    href="https://github.com/Kavya879/RuPix"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group relative px-10 py-5 rounded-full border-2 border-white/20 backdrop-blur-md font-bold text-lg transition-all duration-300 hover:bg-white/10 hover:border-white/40 overflow-hidden"
+                >
+                    <span className="relative z-10 flex items-center gap-3 text-white group-hover:text-yellow-400 transition-colors duration-300">
+                        Star on GitHub
+                        <FaGithub className="w-5 h-5" />
+                    </span>
+                    <div className="absolute inset-0 bg-gradient-to-r from-yellow-500/10 to-pink-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-full" />
+                </a>
+            </div>
 
                     {/* Hero Visual Container */}
                     <div 
@@ -118,34 +133,35 @@ const App = () => {
                             <div className="absolute inset-0 bg-gradient-to-tr from-violet-500/10 via-transparent to-cyan-500/10" />
                             
                             <div className="relative aspect-video bg-gradient-to-br from-slate-900/90 to-slate-800/90 rounded-2xl overflow-hidden">
-                                <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(167,139,250,0.1),transparent_50%)]" />
-                                
-                                {/* Window Controls */}
-                                <div className="absolute top-6 left-6 flex gap-2.5">
-                                    <div className="w-3.5 h-3.5 rounded-full bg-red-500" />
-                                    <div className="w-3.5 h-3.5 rounded-full bg-yellow-500" />
-                                    <div className="w-3.5 h-3.5 rounded-full bg-green-500" />
-                                </div>
 
-                                {/* Center Icon */}
-                                <div className="absolute inset-0 flex items-center justify-center">
-                                    <div className="relative">
-                                        <Layers className="w-32 h-32 text-violet-400/30" />
-                                        <div className="absolute inset-0 bg-gradient-to-tr from-violet-500/20 to-fuchsia-500/20 blur-2xl" />
-                                    </div>
-                                </div>
+                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(167,139,250,0.1),transparent_50%)]" />
 
-                                {/* Floating Tool Badges */}
-                                <div style={badge1Style} className="absolute top-20 right-8 px-5 py-3 rounded-2xl bg-white/10 backdrop-blur-xl border border-white/20 flex items-center gap-3 transition-transform duration-300 ease-out">
-                                    <Wand2 className="w-5 h-5 text-violet-400" />
-                                    <span className="text-sm font-bold">AI Magic Brush</span>
-                                </div>
+                    {/* Window Controls */}
+                    <div className="absolute top-6 left-6 flex gap-2.5">
+                        <div className="w-3.5 h-3.5 rounded-full bg-red-500" />
+                        <div className="w-3.5 h-3.5 rounded-full bg-yellow-500" />
+                        <div className="w-3.5 h-3.5 rounded-full bg-green-500" />
+                    </div>
 
-                                <div style={badge2Style} className="absolute bottom-20 left-8 px-5 py-3 rounded-2xl bg-white/10 backdrop-blur-xl border border-white/20 flex items-center gap-3 transition-transform duration-300 ease-out">
-                                    <Zap className="w-5 h-5 text-cyan-400" />
-                                    <span className="text-sm font-bold">8x Upscaling</span>
-                                </div>
-                            </div>
+                    {/* Centered Text Container */}
+                    <div className="flex justify-center items-center h-full">
+                        <div className="text-4xl font-black bg-gradient-to-r from-violet-400 via-fuchsia-400 to-cyan-400 bg-clip-text text-transparent">
+                        रूपPix
+                        </div>
+                    </div>
+
+                    {/* Floating Tool Badges */}
+                    <div style={badge1Style} className="absolute top-20 right-8 px-5 py-3 rounded-2xl bg-white/10 backdrop-blur-xl border border-white/20 flex items-center gap-3 transition-transform duration-300 ease-out">
+                        <Wand2 className="w-5 h-5 text-violet-400" />
+                        <span className="text-sm font-bold">AI Background</span>
+                    </div>
+
+                    <div style={badge2Style} className="absolute bottom-20 left-8 px-5 py-3 rounded-2xl bg-white/10 backdrop-blur-xl border border-white/20 flex items-center gap-3 transition-transform duration-300 ease-out">
+                        <Zap className="w-5 h-5 text-cyan-400" />
+                        <span className="text-sm font-bold">Upscaling,Enhancement and more</span>
+                    </div>
+                    </div>
+
                         </div>
 
                         {/* Floating Orbs */}
