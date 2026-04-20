@@ -2,14 +2,42 @@ import { NextResponse } from "next/server";
 import ImageKit from "imagekit";
 import { auth } from "@clerk/nextjs/server";
 
-const imagekit = new ImageKit({
-  publicKey: process.env.NEXT_PUBLIC_IMAGEKIT_PUBLIC_KEY,
-  urlEndpoint: process.env.NEXT_PUBLIC_IMAGEKIT_URL_ENDPOINT,
-  privateKey: process.env.IMAGEKIT_PRIVATE_KEY,
-});
+const getImageKitConfig = () => {
+  const publicKey =
+    process.env.IMAGEKIT_PUBLIC_KEY || process.env.NEXT_PUBLIC_IMAGEKIT_PUBLIC_KEY;
+  const urlEndpoint =
+    process.env.IMAGEKIT_URL_ENDPOINT || process.env.NEXT_PUBLIC_IMAGEKIT_URL_ENDPOINT;
+  const privateKey = process.env.IMAGEKIT_PRIVATE_KEY;
+
+  return {
+    publicKey,
+    urlEndpoint,
+    privateKey,
+  };
+};
 
 export async function POST(request) {
   try {
+    const { publicKey, urlEndpoint, privateKey } = getImageKitConfig();
+
+    if (!publicKey || !urlEndpoint || !privateKey) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: "ImageKit is not configured",
+          details:
+            "Missing IMAGEKIT_PUBLIC_KEY (or NEXT_PUBLIC_IMAGEKIT_PUBLIC_KEY), IMAGEKIT_URL_ENDPOINT (or NEXT_PUBLIC_IMAGEKIT_URL_ENDPOINT), or IMAGEKIT_PRIVATE_KEY in environment variables.",
+        },
+        { status: 500 }
+      );
+    }
+
+    const imagekit = new ImageKit({
+      publicKey,
+      urlEndpoint,
+      privateKey,
+    });
+
     //from convexquery get userid
     const { userId } = await auth();
     if (!userId) {

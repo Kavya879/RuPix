@@ -16,6 +16,7 @@ import {
 import { HexColorPicker } from "react-colorful";
 import { useCanvas } from "@/context/context";
 import { FabricImage } from "fabric";
+import { buildImageKitTransformUrl, isImageKitUrl } from "@/lib/imagekit";
 
 // Unsplash API configuration
 const UNSPLASH_ACCESS_KEY = process.env.NEXT_PUBLIC_UNSPLASH_ACCESS_KEY;
@@ -51,10 +52,17 @@ export default function BackgroundControls({ project }) {
       const currentImageUrl =
         project.currentImageUrl || project.originalImageUrl;
 
+      if (!isImageKitUrl(currentImageUrl)) {
+        alert(
+          "AI background removal requires an ImageKit-hosted image. Please upload through RuPix and try again."
+        );
+        return;
+      }
+
       // Create ImageKit transformation URL for background removal
-      const bgRemovedUrl = currentImageUrl.includes("ik.imagekit.io")
-        ? `${currentImageUrl.split("?")[0]}?tr=e-bgremove`
-        : currentImageUrl;
+      const bgRemovedUrl = buildImageKitTransformUrl(currentImageUrl, [
+        "e-bgremove",
+      ]);
 
       // Create new image with background removed
       const processedImage = await FabricImage.fromURL(bgRemovedUrl, {
@@ -221,11 +229,19 @@ export default function BackgroundControls({ project }) {
     try {
       const currentImageUrl =
         project.currentImageUrl || project.originalImageUrl;
+
+      if (!isImageKitUrl(currentImageUrl)) {
+        alert(
+          "AI background generation requires an ImageKit-hosted image. Please upload through RuPix and try again."
+        );
+        return;
+      }
+
       const encodedPrompt = encodePrompt(prompt);
       // Create ImageKit transformation URL for background removal
-      const newBgUrl = currentImageUrl.includes("ik.imagekit.io")
-        ? `${currentImageUrl.split("?")[0]}?tr=e-changebg-prompte-${encodedPrompt}`
-        : currentImageUrl;
+      const newBgUrl = buildImageKitTransformUrl(currentImageUrl, [
+        `e-changebg-prompte-${encodedPrompt}`,
+      ]);
 
     // Create fabric image from URL
       const fabricImage = await FabricImage.fromURL(newBgUrl, {

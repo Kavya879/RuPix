@@ -60,8 +60,10 @@ const NewProjectModal = ({ isOpen, onClose }) => {
 
       const uploadData = await uploadResponse.json();
 
-      if (!uploadData.success) {
-        throw new Error(uploadData.error || "Failed to upload image");
+      if (!uploadResponse.ok || !uploadData.success) {
+        throw new Error(
+          uploadData.details || uploadData.error || "Failed to upload image"
+        );
       }
 
       const projectId = await createProject({

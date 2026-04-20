@@ -16,6 +16,7 @@ import { useCanvas } from "@/context/context";
 import { FabricImage } from "fabric";
 import { api } from "@/convex/_generated/api";
 import { useConvexMutation } from "@/hooks/useConvexQuery";
+import { buildImageKitTransformUrl, isImageKitUrl } from "@/lib/imagekit";
 
 const RETOUCH_PRESETS = [
   {
@@ -66,20 +67,7 @@ export function AIEdit({ project }) {
     const preset = RETOUCH_PRESETS.find((p) => p.key === presetKey);
     if (!imageUrl || !preset) return imageUrl;
 
-    const [baseUrl, existingQuery] = imageUrl.split("?");
-
-    if (existingQuery) {
-      const params = new URLSearchParams(existingQuery);
-      const existingTr = params.get("tr");
-
-      if (existingTr) {
-        // Append retouch to existing transformations
-        return `${baseUrl}?tr=${existingTr},${preset.transform}`;
-      }
-    }
-
-    // No existing transformations, create new
-    return `${baseUrl}?tr=${preset.transform}`;
+    return buildImageKitTransformUrl(imageUrl, [preset.transform]);
   };
 
   const applyRetouch = async () => {
@@ -95,6 +83,14 @@ export function AIEdit({ project }) {
     try {
       const currentImageUrl =
         mainImage.getSrc?.() || mainImage._element?.src || mainImage.src;
+
+      if (!isImageKitUrl(currentImageUrl)) {
+        alert(
+          "AI retouch requires an ImageKit-hosted image. Please upload through RuPix and try again."
+        );
+        return;
+      }
+
       const retouchedUrl = buildRetouchUrl(currentImageUrl, selectedPreset);
 
       const retouchedImage = await FabricImage.fromURL(retouchedUrl, {

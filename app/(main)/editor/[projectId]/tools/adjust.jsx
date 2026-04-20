@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { Slider } from "@/components/ui/slider";
 import { Button } from "@/components/ui/button";
 import { RotateCcw } from "lucide-react";
@@ -105,8 +105,8 @@ const DEFAULT_VALUES = FILTER_CONFIGS.reduce((acc, config) => {
 }, {});
 
 export function AdjustControls() {
-  const [filterValues, setFilterValues] = useState(DEFAULT_VALUES);
-  const [isApplying, setIsApplying] = useState(false);
+  const defaultValues = useMemo(() => ({ ...DEFAULT_VALUES }), []);
+  const [filterValues, setFilterValues] = useState(defaultValues);
   const { canvasEditor } = useCanvas();
 
   const getActiveImage = () => {
@@ -117,11 +117,9 @@ export function AdjustControls() {
     return objects.find((obj) => obj.type === "image") || null;
   };
 
-  const applyFilters = async (newValues) => {
+  const applyFilters = (newValues) => {
     const imageObject = getActiveImage();
-    if (!imageObject || isApplying) return;
-
-    setIsApplying(true);
+    if (!imageObject) return;
 
     try {
       const filtersToApply = [];
@@ -139,16 +137,14 @@ export function AdjustControls() {
       });
 
       imageObject.filters = filtersToApply;
+      imageObject.applyFilters();
+      imageObject.set("dirty", true);
+      canvasEditor.requestRenderAll();
 
-      await new Promise((resolve) => {
-        imageObject.applyFilters();
-        canvasEditor.requestRenderAll();
-        setTimeout(resolve, 50);
-      });
+      // Ensure filter changes are treated as modifications for autosave listeners.
+      canvasEditor.fire("object:modified", { target: imageObject });
     } catch (error) {
       console.error("Error applying filters:", error);
-    } finally {
-      setIsApplying(false);
     }
   };
 
@@ -162,8 +158,8 @@ export function AdjustControls() {
   };
 
   const resetFilters = () => {
-    setFilterValues(DEFAULT_VALUES);
-    applyFilters(DEFAULT_VALUES);
+    setFilterValues(defaultValues);
+    applyFilters(defaultValues);
   };
 
   const extractFilterValues = (imageObject) => {
@@ -193,12 +189,33 @@ export function AdjustControls() {
   };
 
   useEffect(() => {
-    const imageObject = getActiveImage();
-    if (imageObject?.filters) {
+    if (!canvasEditor) return;
+
+    const syncValuesFromActiveImage = () => {
+      const imageObject = getActiveImage();
+      if (!imageObject) {
+        setFilterValues(defaultValues);
+        return;
+      }
+
       const existingValues = extractFilterValues(imageObject);
       setFilterValues(existingValues);
-    }
-  }, [canvasEditor]);
+    };
+
+    syncValuesFromActiveImage();
+
+    canvasEditor.on("selection:created", syncValuesFromActiveImage);
+    canvasEditor.on("selection:updated", syncValuesFromActiveImage);
+    canvasEditor.on("selection:cleared", syncValuesFromActiveImage);
+    canvasEditor.on("object:added", syncValuesFromActiveImage);
+
+    return () => {
+      canvasEditor.off("selection:created", syncValuesFromActiveImage);
+      canvasEditor.off("selection:updated", syncValuesFromActiveImage);
+      canvasEditor.off("selection:cleared", syncValuesFromActiveImage);
+      canvasEditor.off("object:added", syncValuesFromActiveImage);
+    };
+  }, [canvasEditor, defaultValues]);
 
   if (!canvasEditor) {
     return (
@@ -262,15 +279,6 @@ export function AdjustControls() {
           original values.
         </p>
       </div>
-
-      {isApplying && (
-        <div className="flex items-center justify-center py-2">
-          <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-cyan-400"></div>
-          <span className="ml-2 text-xs text-white/70">
-            Applying filters...
-          </span>
-        </div>
-      )}
     </div>
   );
 }

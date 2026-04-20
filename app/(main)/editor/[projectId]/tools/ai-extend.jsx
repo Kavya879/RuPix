@@ -8,6 +8,7 @@ import { useCanvas } from "@/context/context";
 import { FabricImage } from "fabric";
 import { api } from "@/convex/_generated/api";
 import { useConvexMutation } from "@/hooks/useConvexQuery";
+import { buildImageKitTransformUrl, isImageKitUrl } from "@/lib/imagekit";
 
 const DIRECTIONS = [
   { key: "top", label: "Top", icon: ArrowUp },
@@ -64,9 +65,6 @@ export function AIExtenderControls({ project }) {
 
   const buildExtensionUrl = (imageUrl) => {
     if (!imageUrl || !selectedDirection) return imageUrl;
-
-    // Always use the base URL without existing transformations to avoid duplicates
-    const baseUrl = imageUrl.split("?")[0];
     const { width, height } = calculateDimensions();
 
     const transformations = [
@@ -80,7 +78,7 @@ export function AIExtenderControls({ project }) {
     const focus = FOCUS_MAP[selectedDirection];
     if (focus) transformations.push(focus);
 
-    return `${baseUrl}?tr=${transformations.join(",")}`;
+    return buildImageKitTransformUrl(imageUrl, transformations);
   };
 
   const selectDirection = (direction) => {
@@ -96,6 +94,14 @@ export function AIExtenderControls({ project }) {
 
     try {
       const currentImageUrl = getImageSrc(mainImage);
+
+      if (!isImageKitUrl(currentImageUrl)) {
+        alert(
+          "AI extension requires an ImageKit-hosted image. Please upload through RuPix and try again."
+        );
+        return;
+      }
+
       const extendedUrl = buildExtensionUrl(currentImageUrl);
 
       const extendedImage = await FabricImage.fromURL(extendedUrl, {
