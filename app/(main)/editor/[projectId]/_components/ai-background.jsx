@@ -16,7 +16,11 @@ import {
 import { HexColorPicker } from "react-colorful";
 import { useCanvas } from "@/context/context";
 import { FabricImage } from "fabric";
-import { buildImageKitTransformUrl, isImageKitUrl } from "@/lib/imagekit";
+import {
+  buildImageKitTransformUrl,
+  isImageKitUrl,
+  requestSignedTransformUrl,
+} from "@/lib/imagekit";
 
 // Unsplash API configuration
 const UNSPLASH_ACCESS_KEY = process.env.NEXT_PUBLIC_UNSPLASH_ACCESS_KEY;
@@ -60,7 +64,7 @@ export default function BackgroundControls({ project }) {
       }
 
       // Create ImageKit transformation URL for background removal
-      const bgRemovedUrl = buildImageKitTransformUrl(currentImageUrl, [
+      const bgRemovedUrl = await requestSignedTransformUrl(currentImageUrl, [
         "e-bgremove",
       ]);
 
@@ -208,23 +212,20 @@ export default function BackgroundControls({ project }) {
 
 
   const encodePrompt = (prompt) => {
-  // 1. Encode prompt as URI component (handles special chars)
-    const urlEncoded = encodeURIComponent(prompt);
+    const trimmedPrompt = (prompt || "").trim();
+    if (!trimmedPrompt) return "";
 
-    // 2. Base64 encode the URL-encoded string
-    // Use btoa for Base64 in browser environment
-    // Note: btoa works on binary strings, so we encode as UTF-8 first
-    // For safety, use this helper to properly handle UTF-8 strings:
-
-    function utf8ToB64(str) {
-      return btoa(unescape(encodeURIComponent(str)));
-    }
-
-    return utf8ToB64(urlEncoded);
+    // ImageKit expects base64 of the raw prompt (not URL-encoded). Then make it URL-safe.
+    const base64Prompt = btoa(unescape(encodeURIComponent(trimmedPrompt)));
+    return encodeURIComponent(base64Prompt);
   };
 
-  const handleAIPrompt = async (prompt)=>
-  {
+  const handleAIPrompt = async (prompt) => {
+    if (!prompt?.trim()) {
+      alert("Please enter a background prompt first.");
+      return;
+    }
+
     setProcessingMessage("Changing Background with AI...");
     try {
       const currentImageUrl =
@@ -238,9 +239,13 @@ export default function BackgroundControls({ project }) {
       }
 
       const encodedPrompt = encodePrompt(prompt);
+      if (!encodedPrompt) {
+        alert("Please enter a valid background prompt.");
+        return;
+      }
       // Create ImageKit transformation URL for background removal
-      const newBgUrl = buildImageKitTransformUrl(currentImageUrl, [
-        `e-changebg-prompte-${encodedPrompt}`,
+      const newBgUrl = await requestSignedTransformUrl(currentImageUrl, [
+        `e-changebg-prompt-${encodedPrompt}`,
       ]);
 
     // Create fabric image from URL

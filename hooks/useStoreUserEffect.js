@@ -1,4 +1,9 @@
 //https://docs.convex.dev/auth/database-auth
+// The useStoreUserEffect.js file defines a custom React hook called useStoreUserEffect. It:
+// Checks if a user is authenticated.
+// Stores the user's info in the database when they log in.
+// Tracks loading and authentication status, including if the user is saved in the database.
+
 import { useUser } from "@clerk/nextjs";
 import { useConvexAuth } from "convex/react";
 import { useEffect, useState } from "react";

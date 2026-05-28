@@ -8,7 +8,11 @@ import { useCanvas } from "@/context/context";
 import { FabricImage } from "fabric";
 import { api } from "@/convex/_generated/api";
 import { useConvexMutation } from "@/hooks/useConvexQuery";
-import { buildImageKitTransformUrl, isImageKitUrl } from "@/lib/imagekit";
+import {
+  buildImageKitTransformUrl,
+  isImageKitUrl,
+  requestSignedTransformUrl,
+} from "@/lib/imagekit";
 
 const DIRECTIONS = [
   { key: "top", label: "Top", icon: ArrowUp },
@@ -68,7 +72,7 @@ export function AIExtenderControls({ project }) {
     const { width, height } = calculateDimensions();
 
     const transformations = [
-      "bg-genfill",
+      "e-genfill",
       `w-${width}`,
       `h-${height}`,
       "cm-pad_resize",
@@ -102,7 +106,20 @@ export function AIExtenderControls({ project }) {
         return;
       }
 
-      const extendedUrl = buildExtensionUrl(currentImageUrl);
+      const { width, height } = calculateDimensions();
+      const transformations = [
+        "e-genfill",
+        `w-${width}`,
+        `h-${height}`,
+        "cm-pad_resize",
+      ];
+      const focus = FOCUS_MAP[selectedDirection];
+      if (focus) transformations.push(focus);
+
+      const extendedUrl = await requestSignedTransformUrl(
+        currentImageUrl,
+        transformations
+      );
 
       const extendedImage = await FabricImage.fromURL(extendedUrl, {
         crossOrigin: "anonymous",

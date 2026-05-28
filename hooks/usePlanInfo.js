@@ -1,5 +1,11 @@
-import { useAuth } from "@clerk/nextjs"
+// The usePlanInfo.js file defines a custom React hook called usePlanInfo. It:
 
+// Checks the user's subscription plan (free or pro).
+// Determines which features/tools the user can access based on their plan.
+// Provides functions to check tool access, list restricted tools, and check if the user can create more projects.
+// It helps manage feature access depending on the user's plan in your app.
+
+import { useAuth } from "@clerk/nextjs"
 // useAuth() is a React Hook (from a library like Clerk, Convex, or Firebase)
 // that returns an object containing authentication info.
 export const usePlanInfo = () => {

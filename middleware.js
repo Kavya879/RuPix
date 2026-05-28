@@ -1,3 +1,14 @@
+// The lib folder stands for "library." It is used to store helper functions, utilities,
+//  or modules that are shared across your project. 
+// These files are not pages or components, but reusable code that supports your app’s main features.
+
+// The middleware.js file in a Next.js app runs code before a request is completed. It can:
+// Check if a user is logged in before showing a page.
+// Redirect users to different pages.
+// Block or allow access to certain routes.
+// Change the request or response.
+// It helps control what happens when someone visits your site.
+
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 

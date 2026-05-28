@@ -1,3 +1,14 @@
+// React Hooks are simple functions in React that let you use features like
+//  state and lifecycle in functional components—without needing classes.
+
+//The useConvexQuery.js file defines a custom React hook called useConvexQuery. It:
+// Fetches data from a Convex backend using a query.
+// Tracks loading and error states.
+// Shows an error message if something goes wrong.
+// Returns the data, loading, and error status for use in your components.
+// It helps you easily get and manage data from Convex in your React app.
+
+
 import { useMutation, useQuery } from "convex/react"
 import { useEffect, useState } from "react";
 import { toast } from "sonner";

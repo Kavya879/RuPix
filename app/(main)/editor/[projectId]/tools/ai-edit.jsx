@@ -16,7 +16,11 @@ import { useCanvas } from "@/context/context";
 import { FabricImage } from "fabric";
 import { api } from "@/convex/_generated/api";
 import { useConvexMutation } from "@/hooks/useConvexQuery";
-import { buildImageKitTransformUrl, isImageKitUrl } from "@/lib/imagekit";
+import {
+  buildImageKitTransformUrl,
+  isImageKitUrl,
+  requestSignedTransformUrl,
+} from "@/lib/imagekit";
 
 const RETOUCH_PRESETS = [
   {
@@ -91,7 +95,14 @@ export function AIEdit({ project }) {
         return;
       }
 
-      const retouchedUrl = buildRetouchUrl(currentImageUrl, selectedPreset);
+      const selectedPresetData = RETOUCH_PRESETS.find(
+        (p) => p.key === selectedPreset
+      );
+      const retouchedUrl = selectedPresetData
+        ? await requestSignedTransformUrl(currentImageUrl, [
+            selectedPresetData.transform,
+          ])
+        : buildRetouchUrl(currentImageUrl, selectedPreset);
 
       const retouchedImage = await FabricImage.fromURL(retouchedUrl, {
         crossOrigin: "anonymous",

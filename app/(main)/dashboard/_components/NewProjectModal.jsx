@@ -1,3 +1,5 @@
+//Modal to create project, upload image to ImageKit API, and insert project record in Convex.
+
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { DialogHeader } from '@/components/ui/dialog'
 import { api } from '@/convex/_generated/api'

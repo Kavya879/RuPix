@@ -1,3 +1,6 @@
+// Dashboard page that lists user projects and opens the create-project modal.
+
+
 "use client";
 import { Button } from '@/components/ui/button';
 import { api } from '@/convex/_generated/api'

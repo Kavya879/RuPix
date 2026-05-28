@@ -117,7 +117,7 @@ export function AdjustControls() {
     return objects.find((obj) => obj.type === "image") || null;
   };
 
-  const applyFilters = (newValues) => {
+  const applyFilters = async (newValues) => {
     const imageObject = getActiveImage();
     if (!imageObject) return;
 
@@ -137,7 +137,7 @@ export function AdjustControls() {
       });
 
       imageObject.filters = filtersToApply;
-      imageObject.applyFilters();
+      await Promise.resolve(imageObject.applyFilters());
       imageObject.set("dirty", true);
       canvasEditor.requestRenderAll();
 
@@ -154,12 +154,12 @@ export function AdjustControls() {
       [filterKey]: Array.isArray(value) ? value[0] : value,
     };
     setFilterValues(newValues);
-    applyFilters(newValues);
+    void applyFilters(newValues);
   };
 
   const resetFilters = () => {
     setFilterValues(defaultValues);
-    applyFilters(defaultValues);
+    void applyFilters(defaultValues);
   };
 
   const extractFilterValues = (imageObject) => {
